@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="src/jquery.js"></script>
+    <script src="dest/mockAjax.min.js"></script>
+    <script>
+        // initialization
+        $.mockAjax.init();
+        // set the setting of type 1
+        $.mockAjax.setMockMap({
+            url: '/interfaceOne',
+            infos: 'hello world',
+            wait: 3000,
+            status: 'success'
+        });
+
+        function testone() {
+            $.ajax({
+                url: '/interfaceOne',
+                mock: true,
+                success: function (data) {
+                    console.log(data)
+                },
+                error: function (err) {
+                    console.error(err)
+                }
+            });
+            console.log('这里设置3000毫秒延迟.用于模拟网络延迟');
+        }
+        // set the setting of type 2
+        $.mockAjax.setMockMap({
+            url: '/interfaceTwo',
+            infos: {
+                error: 'that \'s error'
+            },
+            status: 'error'
+        });
+        function testtwo() {
+            $.ajax({
+                url: '/interfaceTwo',
+                mock: true,
+                success: function (data) {
+                    console.log(data)
+                },
+                error: function (err) {
+                    console.error(err)
+                }
+            })
+        }
+        // set the setting of type 2
+        $.mockAjax.setMockMap({
+            url: '/interfaceThree',
+            infos: {
+                error: 'that \'s timeout'
+            },
+            status: 'timeout'
+        });
+        function testthree() {
+            $.ajax({
+                url: '/interfaceThree',
+                mock: true,
+                timeout: 500,
+                success: function (data) {
+                    console.log(data)
+                },
+                error: function (err) {
+                    console.error(err)
+                }
+            })
+        }
+
+    </script>
+</head>
+<body>
+<button onclick="testone()">test type 1</button>
+<button onclick="testtwo()">test type 2</button>
+<button onclick="testthree()">test type 3</button>
+</body>
+</html>
