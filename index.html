@@ -11,7 +11,14 @@
         // set the setting of type 1
         $.mockAjax.setMockMap({
             url: '/interfaceOne',
-            infos: 'hello world',
+            infos: {
+                "errorno": 0,
+                "result": [
+                    {"name": "小张", "age": "17"},
+                    {"name": "小李", "age": "23"},
+                    {"name": "小王", "age": "22"}
+                ]
+            },
             wait: 3000,
             status: 'success'
         });
@@ -49,7 +56,7 @@
         $.mockAjax.setMockMap({
             url: '/interfaceTwo',
             infos: {
-                error: 'that \'s error'
+                error: {"errorno": 1, "result": []}
             },
             status: 'error'
         });
@@ -72,7 +79,7 @@
         $.mockAjax.setMockMap({
             url: '/interfaceThree',
             infos: {
-                error: 'that \'s timeout'
+                error: 'it \'s timeout'
             },
             status: 'timeout'
         });
