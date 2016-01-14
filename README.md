@@ -38,7 +38,7 @@ a analog ajax request ( mock request ) javascript library
 ```
 
 #### 2) $.mockAjax.setMockMap(config);
-初始化mock
+设置mock映射。把接口文档按照指定的格式存放起来。
 
 `参数列表:`
 >+ @param config {Object} 配置信息
@@ -46,13 +46,17 @@ a analog ajax request ( mock request ) javascript library
 `示例用法:`
 
 ```js
-  // 详情见示例
+  // 假设现在有一份这样的接口文档,但是后台接口还没有开发好。
+  // 接口url："/getInfo"
+  // 返回格式："{"errorno":0,"result":[{"name":"小张","age":"17"},{"name":"小李","age":"23"},{"name":"小王","age":"22"}]}"
+
+  // 这种情况我们就可以用到mockAjax来模拟ajax请求了。
   $.mockAjax.setMockMap({
      // mock的url.
-     url: '/interfaceOne',
+     url: '/getInfo',
      // 返回的数据信息,可以为字符串也可以为对象.
      // 具体用法见index.html中的示例.
-     infos: 'hello world',
+     infos: {"errorno":0,"result":[{"name":"小张","age":"17"},{"name":"小李","age":"23"},{"name":"小王","age":"22"}]},
      // 等待毫秒数,用于模拟网络延迟.
      wait: 3000,
      // 本次mock希望得到的结果.可以指定三张状态 'success' 'error' 'timeout' 分别代表'成功','失败','超时'
@@ -67,10 +71,11 @@ a analog ajax request ( mock request ) javascript library
 
 ```js
    $.ajax({
-      url: '/interfaceOne',
+      url: '/getInfo',
       // 只有添加此属性才能触发mock,否则调用的为jQuery的ajax方法
       mock: true,
       success: function (data) {
+         // 将会打印出设置的mock infos
          console.log(data)
       },
       error: function (err) {
