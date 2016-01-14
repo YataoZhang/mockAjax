@@ -91,23 +91,7 @@
         }
         return deferred.promise();
     };
-//            var con = [
-//                {
-//                    url: '',
-//                    infos: {
-//                        success: '',
-//                        error: ''
-//                    },
-//                    status: 'timeout'
-//                },
-//                {
-//                    url: '',
-//                    infos: {
-//                        success: '',
-//                        error: ''
-//                    },
-//                    status: 'timeout'
-//                }];
+
     /**
      * set mock info
      * @config {Object} config mock信息

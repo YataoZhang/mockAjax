@@ -48,14 +48,43 @@ a analog ajax request ( mock request ) javascript library
 ```js
   // 详情见示例
   $.mockAjax.setMockMap({
+     // mock的url.
      url: '/interfaceOne',
+     // 返回的数据信息,可以为字符串也可以为对象.
+     // 具体用法见index.html中的示例.
      infos: 'hello world',
+     // 等待毫秒数,用于模拟网络延迟.
      wait: 3000,
+     // 本次mock希望得到的结果.可以指定三张状态 'success' 'error' 'timeout' 分别代表'成功','失败','超时'
      status: 'success'
   });
     
 ```
 
+#### 3) $.ajax调用
+
+`示例用法:`
+
+```js
+   $.ajax({
+      url: '/interfaceOne',
+      // 只有添加此属性才能触发mock,否则调用的为jQuery的ajax方法
+      mock: true,
+      success: function (data) {
+         console.log(data)
+      },
+      error: function (err) {
+         console.error(err)
+      }
+   }).done(function(data){
+        // 支持promise调用
+   }).fail(function(err){
+        // ...
+   }).always(function(){
+        // ...
+   });
+    
+```
 
 ## 疑问?
 

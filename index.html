@@ -15,10 +15,10 @@
             wait: 3000,
             status: 'success'
         });
-
         function testone() {
             $.ajax({
                 url: '/interfaceOne',
+                // 只有添加此属性才能触发mock,否则调用的为jQuery的ajax方法
                 mock: true,
                 success: function (data) {
                     console.log(data)
@@ -26,6 +26,14 @@
                 error: function (err) {
                     console.error(err)
                 }
+            }).done(function (data) {
+                // 支持promise调用
+                console.log('promise done:',data);
+            }).fail(function (err) {
+                // ...
+            }).always(function () {
+                // ...
+                console.log('promise always');
             });
             console.log('这里设置3000毫秒延迟.用于模拟网络延迟');
         }
