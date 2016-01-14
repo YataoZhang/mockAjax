@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title></title>
     <script src="src/jquery.js"></script>
-    <script src="dest/mockAjax.min.js"></script>
+    <script src="src/mockAjax.js"></script>
     <script>
         // initialization
         $.mockAjax.init();
@@ -20,6 +20,14 @@
                 url: '/interfaceOne',
                 // 只有添加此属性才能触发mock,否则调用的为jQuery的ajax方法
                 mock: true,
+                async: true,
+                beforeSend: function () {
+                    console.log(this.stats = 'begin request');
+                },
+                complete: function () {
+                    console.log(this.stats = 'begin over');
+                },
+                context: {stats: ''},
                 success: function (data) {
                     console.log(data)
                 },
@@ -28,7 +36,7 @@
                 }
             }).done(function (data) {
                 // 支持promise调用
-                console.log('promise done:',data);
+                console.log('promise done:', data);
             }).fail(function (err) {
                 // ...
             }).always(function () {
@@ -46,16 +54,19 @@
             status: 'error'
         });
         function testtwo() {
+            // sync request
             $.ajax({
                 url: '/interfaceTwo',
                 mock: true,
+                async: true,
                 success: function (data) {
                     console.log(data)
                 },
                 error: function (err) {
                     console.error(err)
                 }
-            })
+            });
+            console.log('bingo...');
         }
         // set the setting of type 2
         $.mockAjax.setMockMap({
@@ -70,13 +81,15 @@
                 url: '/interfaceThree',
                 mock: true,
                 timeout: 500,
+                async: true,
                 success: function (data) {
                     console.log(data)
                 },
                 error: function (err) {
                     console.error(err)
                 }
-            })
+            });
+            console.log(1)
         }
 
     </script>

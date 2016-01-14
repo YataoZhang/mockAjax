@@ -5,12 +5,13 @@
     if ($ === void 0) {
         throw new Error('please use jQuery');
     }
+    var toString = Object.prototype.toString;
     var Mapping = function (queue) {
         this.queue = queue || [];
     };
     Mapping.prototype = {
         isPureObject: function (data) {
-            return !!(Object.prototype.toString.call(data) === '[object Object]' && data.constructor === Object);
+            return !!(toString.call(data) === '[object Object]' && data.constructor === Object);
         },
         getItem: function (src) {
             src = String(src);
@@ -26,7 +27,7 @@
         pushQueue: function (infos) {
             var res = null;
             var me = this;
-            if (Object.prototype.toString.call(infos) !== '[object Array]') {
+            if (toString.call(infos) !== '[object Array]') {
                 if (!me.isPureObject(infos)) {
                     throw new Error('please set pure object');
                 }
@@ -55,10 +56,16 @@
     };
     var map = new Mapping();
     var setWait = function (time, callback) {
-        if (time > 0) {
+        var sym = null;
+        if (toString.call(time) === '[object Boolean]') {
+            sym = time;
+        } else {
+            sym = time > 0;
+        }
+        if (sym) {
             setTimeout(function () {
                 callback.call(null);
-            }, time)
+            }, time | 0)
         } else {
             callback.call(null)
         }
@@ -66,29 +73,39 @@
     var mockAjax = function (options) {
         var deferred = $.Deferred();
         var item = map.getItem(options.url || '');
-        switch (item.status) {
-            case 'success':
-                setWait(item.wait, function () {
-                    options.success(item.infos.success);
-                    deferred.resolve(item.infos.success);
-                });
-                break;
-            case 'error':
-                setWait(item.wait, function () {
-                    options.error(item.infos.error);
-                    deferred.reject(item.infos.error);
-                });
-                break;
-            case 'timeout':
-                if (!options.timeout) {
-                    throw new Error('not set timeout');
-                }
-                setTimeout(function () {
-                    options.error(item.infos.error);
-                    deferred.reject(item.infos.error);
-                }, options.timeout);
-                break;
-        }
+        var suc = function () {
+            options.success.call(options.context, item.infos.success);
+            deferred.resolve(item.infos.success);
+            options.complete && options.complete();
+        };
+        var err = function () {
+            options.error.call(options.context, item.infos.error);
+            deferred.reject(item.infos.error);
+            options.complete && options.complete();
+        };
+        setWait(options.async, function () {
+            options.beforeSend && options.beforeSend();
+            switch (item.status) {
+                case 'success':
+                    setWait(item.wait, function () {
+                        suc();
+                    });
+                    break;
+                case 'error':
+                    setWait(item.wait, function () {
+                        err();
+                    });
+                    break;
+                case 'timeout':
+                    if (!options.timeout) {
+                        throw new Error('not set timeout');
+                    }
+                    setTimeout(function () {
+                        err();
+                    }, options.timeout);
+                    break;
+            }
+        });
         return deferred.promise();
     };
 
@@ -113,9 +130,6 @@
         }
     };
     $.extend({
-        ///<summary>
-        /// apply a slider UI
-        ///</summary>
         mockAjax: mockAjax
     });
 })(window, jQuery);
