@@ -97,4 +97,4 @@ a analog ajax request ( mock request ) javascript library
 
 ## License
 
-mockAjax.js在MIT的条款下提供 [MIT License](https://github.com/YataoZhang/mockAjax/blob/master/LICENSE).
+mockAjax.js在MIT的条款下提供 [MIT License](https://github.com/YataoZhang/mockAjax/blob/master/LICENSE).————
