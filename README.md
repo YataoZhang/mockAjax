@@ -52,15 +52,22 @@ a analog ajax request ( mock request ) javascript library
 
   // 这种情况我们就可以用到mockAjax来模拟ajax请求了。
   $.mockAjax.setMockMap({
-     // mock的url.
-     url: '/getInfo',
-     // 返回的数据信息,可以为字符串也可以为对象.
-     // 具体用法见index.html中的示例.
-     infos: {"errorno":0,"result":[{"name":"小张","age":"17"},{"name":"小李","age":"23"},{"name":"小王","age":"22"}]},
-     // 等待毫秒数,用于模拟网络延迟.
-     wait: 3000,
-     // 本次mock希望得到的结果.可以指定三张状态 'success' 'error' 'timeout' 分别代表'成功','失败','超时'
-     status: 'success'
+      // mock的url.
+      url: '/getInfo',
+      // 返回的数据信息,可以为字符串也可以为对象.
+      // 具体用法见index.html中的示例.
+      // 如设置了status,则该属性中必须含有对应的字段.(ps:status为success,info中必须含有success字段,具体如下面代码).
+      infos: {
+          success: {
+              "errorno": 0,
+              "result": [{"name": "小张", "age": "17"}, {"name": "小李", "age": "23"}, {"name": "小王", "age": "22"}]
+          },
+          error:{}
+      },
+      // 等待毫秒数,用于模拟网络延迟.
+      wait: 3000,
+      // 本次mock希望得到的结果.可以指定三张状态 'success' 'error' 'timeout' 分别代表'成功','失败','超时'
+      status: 'success'
   });
     
 ```

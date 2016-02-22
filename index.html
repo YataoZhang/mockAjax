@@ -12,12 +12,14 @@
         $.mockAjax.setMockMap({
             url: '/interfaceOne',
             infos: {
-                "errorno": 0,
-                "result": [
-                    {"name": "小张", "age": "17"},
-                    {"name": "小李", "age": "23"},
-                    {"name": "小王", "age": "22"}
-                ]
+                success: {
+                    "errorno": 0,
+                    "result": [
+                        {"name": "小张", "age": "17"},
+                        {"name": "小李", "age": "23"},
+                        {"name": "小王", "age": "22"}
+                    ]
+                }
             },
             wait: 3000,
             status: 'success'
@@ -52,6 +54,7 @@
             });
             console.log('这里设置3000毫秒延迟.用于模拟网络延迟');
         }
+
         // set the setting of type 2
         $.mockAjax.setMockMap({
             url: '/interfaceTwo',

@@ -74,12 +74,12 @@
         var deferred = $.Deferred();
         var item = map.getItem(options.url || '');
         var suc = function () {
-            options.success&&options.success.call(options.context, item.infos.success);
+            options.success && options.success.call(options.context, item.infos.success);
             deferred.resolve(item.infos.success);
             options.complete && options.complete();
         };
         var err = function () {
-            options.error&&options.error.call(options.context, item.infos.error);
+            options.error && options.error.call(options.context, item.infos.error);
             deferred.reject(item.infos.error);
             options.complete && options.complete();
         };
@@ -108,7 +108,6 @@
         });
         return deferred.promise();
     };
-
     /**
      * set mock info
      * @config {Object} config mock信息
