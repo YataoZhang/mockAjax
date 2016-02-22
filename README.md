@@ -1,5 +1,5 @@
 # mockAjax
-a analog ajax request ( mock request ) javascript library
+virtual ajax request ( mock request ).
 ===
 
 ## mockAjax 中文文档
